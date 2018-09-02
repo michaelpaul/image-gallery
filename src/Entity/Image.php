@@ -25,8 +25,33 @@ class Image
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Please, upload an image file.")
+     * @Assert\Image(
+     *     maxWidth=1000,
+     *     maxHeight=1000,
+     *     mimeTypes={ "image/jpeg", "image/png" }
+     * )
      */
     private $file;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $width;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $height;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $size;
+
+    /**
+     * @ORM\Column(type="string", length=4)
+     */
+    private $format;
 
     /**
      * @ORM\Column(type="integer")
@@ -69,12 +94,12 @@ class Image
         return $this;
     }
 
-    public function getFile(): ?string
+    public function getFile()
     {
         return $this->file;
     }
 
-    public function setFile(string $file): self
+    public function setFile($file): self
     {
         $this->file = $file;
 
@@ -113,6 +138,54 @@ class Image
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getWidth(): ?int
+    {
+        return $this->width;
+    }
+
+    public function setWidth(int $width): self
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function setHeight(int $height): self
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getFormat(): ?string
+    {
+        return $this->format;
+    }
+
+    public function setFormat(string $format): self
+    {
+        $this->format = $format;
 
         return $this;
     }
