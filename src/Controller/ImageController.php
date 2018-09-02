@@ -68,6 +68,9 @@ class ImageController extends Controller
      */
     public function download(Image $image): Response
     {
+        $image->downloaded();
+        $this->getDoctrine()->getManager()->flush();
+
         $opts = [ 'attachment' => true ];
         $src = \Cloudinary::private_download_url($image->getFile(), $image->getFormat(), $opts);
         return $this->redirect($src);
@@ -78,46 +81,15 @@ class ImageController extends Controller
      */
     public function show(Image $image): Response
     {
+        $image->viewed();
+        $this->getDoctrine()->getManager()->flush();
+
         $src = cloudinary_url($image->getFile(), [
             'format' => $image->getFormat(),
-            'type'  => 'private',
-            'crop'  => 'thumb',
-            'width' => 200,
+            'type'   => 'private',
+            'crop'   => 'thumb',
+            'width'  => 400,
         ]);
         return $this->render('image/show.html.twig', ['image' => $image, 'src' => $src]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="image_edit", methods="GET|POST")
-     */
-    public function edit(Request $request, Image $image): Response
-    {
-        $form = $this->createForm(ImageType::class, $image);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('image_edit', ['id' => $image->getId()]);
-        }
-
-        return $this->render('image/edit.html.twig', [
-            'image' => $image,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="image_delete", methods="DELETE")
-     */
-    public function delete(Request $request, Image $image): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($image);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('image_index');
     }
 }

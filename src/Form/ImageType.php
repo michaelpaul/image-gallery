@@ -16,7 +16,6 @@ class ImageType extends AbstractType
         $builder
             ->add('title')
             ->add('file', FileType::class)
-            ->add('createdAt', DateTimeType::class)
         ;
     }
 

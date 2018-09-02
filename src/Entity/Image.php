@@ -189,4 +189,14 @@ class Image
 
         return $this;
     }
+
+    public function downloaded()
+    {
+        $this->downloads++;
+    }
+
+    public function viewed()
+    {
+        $this->views++;
+    }
 }
