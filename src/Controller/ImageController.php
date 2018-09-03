@@ -73,8 +73,12 @@ class ImageController extends Controller
     /**
      * @Route("/{id}", name="image_show", methods="GET")
      */
-    public function show(Image $image): Response
+    public function show(Request $request, Image $image): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('image_index');
+        }
+
         $image->viewed();
         $this->getDoctrine()->getManager()->flush();
 
@@ -84,6 +88,10 @@ class ImageController extends Controller
             'crop'   => 'thumb',
             'width'  => 400,
         ]);
-        return $this->render('image/show.html.twig', ['image' => $image, 'src' => $src]);
+
+        return $this->json([
+            'title' => htmlspecialchars($image->getTitle(), ENT_COMPAT | ENT_HTML5),
+            'src'   => $src,
+        ]);
     }
 }
