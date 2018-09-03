@@ -3,40 +3,42 @@
 {% block title %}Image index{% endblock %}
 
 {% block body %}
-    <h1>Image index</h1>
+<main role="main">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>File</th>
-                <th>Views</th>
-                <th>Downloads</th>
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for image in images %}
-            <tr>
-                <td>{{ image.id }}</td>
-                <td>{{ image.title }}</td>
-                <td>{{ image.file }}</td>
-                <td>{{ image.views }}</td>
-                <td>{{ image.downloads }}</td>
-                <td>{{ image.createdAt ? image.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('image_show', {'id': image.id}) }}">show</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Album example</h1>
+            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+            <p>
+                <a href="{{ path('image_new') }}" class="btn btn-primary my-2">New image</a>
+            </p>
+        </div>
+    </section>
 
-    <a href="{{ path('image_new') }}">Create new</a>
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row">
+                {% for image in images %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img class="card-img-top" src="https://via.placeholder.com/200x100" alt="">
+                        <div class="card-body">
+                            <p class="card-text">{{ image.title }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{{ path('image_show', {'id': image.id}) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                                    <a href="{{ path('image_download', {'id': image.id}) }}" class="btn btn-sm btn-outline-secondary">Download</a>
+                                </div>
+                                <small class="text-muted">{{ image.createdAt ? image.createdAt|date('Y-m-d H:i:s') : '' }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</main>
 {% endblock %}
