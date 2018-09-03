@@ -5,7 +5,7 @@
 
     <section class="jumbotron">
         <div class="container">
-            <h1 class="jumbotron-heading">Create new Image</h1>
+            <h1 class="jumbotron-heading">Add image</h1>
 
             {{ form_start(form) }}
                 {{ form_widget(form) }}
@@ -24,13 +24,13 @@
                 {% for image in images %}
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                        <img class="card-img-top" src="https://via.placeholder.com/200x100" alt="">
+                        <img class="card-img-top" src="{{ image|thumbnail }}" alt="{{ image.title }}">
                         <div class="card-body">
-                            <p class="card-text">{{ image.title }}</p>
+                            <h5 class="card-title">{{ image.title|capitalize }}</h5>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary js-show-image" data-url="{{ path('image_show', {'id': image.id}) }}">View</button>
-                                    <a href="{{ path('image_download', {'id': image.id}) }}" class="btn btn-sm btn-outline-secondary">Download</a>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary js-show-image" data-url="{{ path('image_show', {'id': image.id}) }}">View  <span class="badge badge-secondary">{{ image.views }}</span></button>
+                                    <a href="{{ path('image_download', {'id': image.id}) }}" class="btn btn-sm btn-outline-secondary">Download <span class="badge badge-secondary">{{ image.downloads }}</span></a>
                                 </div>
                                 <small class="text-muted">{{ image.createdAt ? image.createdAt|date('Y-m-d H:i:s') : '' }}</small>
                             </div>
@@ -55,7 +55,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <img src="" alt="">
+        <img src="" alt="" class="img-fluid mx-auto d-block">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

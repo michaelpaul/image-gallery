@@ -85,12 +85,13 @@ class ImageController extends Controller
         $src = cloudinary_url($image->getFile(), [
             'format' => $image->getFormat(),
             'type'   => 'private',
-            'crop'   => 'thumb',
-            'width'  => 400,
+            'width'  => 600,
+            'crop'   => 'limit'
         ]);
 
+        $title = htmlspecialchars($image->getTitle(), ENT_COMPAT | ENT_HTML5);
         return $this->json([
-            'title' => htmlspecialchars($image->getTitle(), ENT_COMPAT | ENT_HTML5),
+            'title' => ucfirst($title),
             'src'   => $src,
         ]);
     }
