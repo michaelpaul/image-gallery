@@ -1,20 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Image index{% endblock %}
-
 {% block body %}
 <main role="main">
 
-    <section class="jumbotron text-center">
+    <section class="jumbotron">
         <div class="container">
-            <h1 class="jumbotron-heading">Album example</h1>
-            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-            <p>
-                <a href="{{ path('image_new') }}" class="btn btn-primary my-2">New image</a>
-            </p>
+            <h1 class="jumbotron-heading">Create new Image</h1>
+
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Upload</button>
+                </div>
+            {{ form_end(form) }}
         </div>
     </section>
 
+    {% if images|length > 0 %}
     <div class="album py-5 bg-light">
         <div class="container">
 
@@ -39,6 +41,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
 </main>
 {% endblock %}

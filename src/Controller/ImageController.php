@@ -17,17 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImageController extends Controller
 {
     /**
-     * @Route("/", name="image_index", methods="GET")
+     * @Route("/", name="image_index", methods="GET|POST")
      */
-    public function index(ImageRepository $imageRepository): Response
-    {
-        return $this->render('image/index.html.twig', ['images' => $imageRepository->findAll()]);
-    }
-
-    /**
-     * @Route("/new", name="image_new", methods="GET|POST")
-     */
-    public function new(Request $request): Response
+    public function index(Request $request, ImageRepository $imageRepository): Response
     {
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
@@ -54,11 +46,13 @@ class ImageController extends Controller
             $em->persist($image);
             $em->flush();
 
+            $this->addFlash('success', 'Image uploaded!');
+
             return $this->redirectToRoute('image_index');
         }
 
-        return $this->render('image/new.html.twig', [
-            'image' => $image,
+        return $this->render('image/index.html.twig', [
+            'images' => $imageRepository->findAll(),
             'form' => $form->createView(),
         ]);
     }
