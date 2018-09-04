@@ -8,6 +8,7 @@
         "cloudinary/cloudinary_php": "^1.10",
         "knplabs/knp-time-bundle": "^1.8",
         "sensio/framework-extra-bundle": "^5.1",
+        "symfony/apache-pack": "^1.0",
         "symfony/asset": "*",
         "symfony/console": "*",
         "symfony/expression-language": "*",
@@ -69,7 +70,7 @@
             "@auto-scripts"
         ],
         "compile": [
-            "php bin/console doctrine:migrations:migrate"
+            "php bin/console doctrine:migrations:migrate --no-interaction"
         ]
     },
     "conflict": {
