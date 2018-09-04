@@ -32,7 +32,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-secondary js-show-image" data-url="{{ path('image_show', {'id': image.id}) }}">View  <span class="badge badge-secondary">{{ image.views }}</span></button>
                                     <a href="{{ path('image_download', {'id': image.id}) }}" class="btn btn-sm btn-outline-secondary">Download <span class="badge badge-secondary">{{ image.downloads }}</span></a>
                                 </div>
-                                <small class="text-muted">{{ image.createdAt ? image.createdAt|date('Y-m-d H:i:s') : '' }}</small>
+                                <small class="text-muted">{{ image.createdAt ? image.createdAt|ago : '' }}</small>
                             </div>
                         </div>
                     </div>

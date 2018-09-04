@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cloudinary/cloudinary_php": "^1.10",
+        "knplabs/knp-time-bundle": "^1.8",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "*",
         "symfony/console": "*",
