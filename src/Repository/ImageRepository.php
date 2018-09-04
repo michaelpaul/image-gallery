@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Image;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\QueryBuilder;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
  * @method Image|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +20,22 @@ class ImageRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Image::class);
+    }
+
+    public function findLatest(int $page = 1): Pagerfanta
+    {
+        $qb = $this->createQueryBuilder('i')
+            ->orderBy('i.createdAt', 'DESC');
+        return $this->createPaginator($qb, $page);
+    }
+
+    private function createPaginator(QueryBuilder $query, int $page): Pagerfanta
+    {
+        $paginator = new Pagerfanta(new DoctrineORMAdapter($query, false));
+        $paginator->setMaxPerPage(Image::NUM_ITEMS);
+        $paginator->setCurrentPage($page);
+
+        return $paginator;
     }
 
 //    /**

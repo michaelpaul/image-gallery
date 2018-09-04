@@ -16,12 +16,12 @@
         </div>
     </section>
 
-    {% if images|length > 0 %}
+    {% if images.nbResults > 0 %}
     <div class="album py-5 bg-light">
         <div class="container">
 
             <div class="row">
-                {% for image in images %}
+                {% for image in images.currentPageResults %}
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         <img class="card-img-top" src="{{ image|thumbnail }}" alt="{{ image.title }}">
@@ -39,6 +39,19 @@
                 </div>
                 {% endfor %}
             </div>
+            {% if images.haveToPaginate %}
+                <nav aria-label="Page navigation">
+                    {{ 
+                        pagerfanta(images, 'twitter_bootstrap4', { 
+                            css_container_class: 'pagination justify-content-center', 
+                            prev_message: 'Previous',
+                            next_message: 'Next',
+                            routeName: 'image_index_paginated', 
+                            routeParams: app.request.query.all
+                        })
+                    }}
+                </nav>
+            {% endif %}
         </div>
     </div>
     {% endif %}

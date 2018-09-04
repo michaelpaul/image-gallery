@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Image
 {
+    const NUM_ITEMS = 9;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

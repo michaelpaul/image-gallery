@@ -17,12 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ImageController extends Controller
 {
     /**
-     * @Route("/", name="image_index", methods="GET|POST")
+     * @Route("/", defaults={"page": "1"}, methods="GET|POST", name="image_index")
+     * @Route("/page/{page}", requirements={"page"="\d+"}, methods={"GET"}, name="image_index_paginated")
      */
-    public function index(Request $request, ImageRepository $imageRepository): Response
+    public function index(Request $request, ImageRepository $imageRepository, int $page): Response
     {
         $image = new Image();
-        $form = $this->createForm(ImageType::class, $image);
+        $form = $this->createForm(ImageType::class, $image, [
+            'action' => $this->generateUrl('image_index'),
+            'method' => 'POST'
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,13 +56,13 @@ class ImageController extends Controller
         }
 
         return $this->render('image/index.html.twig', [
-            'images' => $imageRepository->findAll(),
+            'images' => $imageRepository->findLatest($page),
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}/download", name="image_download", methods="GET")
+     * @Route("/download/{id}", name="image_download", methods="GET")
      */
     public function download(Image $image): Response
     {
