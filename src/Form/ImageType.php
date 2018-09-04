@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,8 +14,7 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('file', FileType::class)
-        ;
+            ->add('file', FileType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

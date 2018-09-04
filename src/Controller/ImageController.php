@@ -6,19 +6,19 @@ use App\Entity\Image;
 use App\Form\ImageType;
 use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/image")
- */
 class ImageController extends Controller
 {
     /**
      * @Route("/", defaults={"page": "1"}, methods="GET|POST", name="image_index")
      * @Route("/page/{page}", requirements={"page"="\d+"}, methods={"GET"}, name="image_index_paginated")
+     * @param Request $request
+     * @param ImageRepository $imageRepository
+     * @param int $page
+     * @return Response
      */
     public function index(Request $request, ImageRepository $imageRepository, int $page): Response
     {
@@ -33,10 +33,10 @@ class ImageController extends Controller
             // upload
             $file = $image->getFile();
             $upload = \Cloudinary\Uploader::upload($file->getRealPath(), [
-                'type'   => 'private',
+                'type' => 'private',
                 'folder' => 'cct/gallery/',
-                'crop'   => 'limit',
-                'width'  => 1000,
+                'crop' => 'limit',
+                'width' => 1000,
                 'height' => 1000
             ]);
             $image->setFile($upload['public_id']);
@@ -63,19 +63,24 @@ class ImageController extends Controller
 
     /**
      * @Route("/download/{id}", name="image_download", methods="GET")
+     * @param Image $image
+     * @return Response
      */
     public function download(Image $image): Response
     {
         $image->downloaded();
         $this->getDoctrine()->getManager()->flush();
 
-        $opts = [ 'attachment' => true ];
+        $opts = ['attachment' => true];
         $src = \Cloudinary::private_download_url($image->getFile(), $image->getFormat(), $opts);
         return $this->redirect($src);
     }
 
     /**
-     * @Route("/{id}", name="image_show", methods="GET")
+     * @Route("/show/{id}", name="image_show", methods="GET")
+     * @param Request $request
+     * @param Image $image
+     * @return Response
      */
     public function show(Request $request, Image $image): Response
     {
@@ -88,15 +93,15 @@ class ImageController extends Controller
 
         $src = cloudinary_url($image->getFile(), [
             'format' => $image->getFormat(),
-            'type'   => 'private',
-            'width'  => 600,
-            'crop'   => 'limit'
+            'type' => 'private',
+            'width' => 600,
+            'crop' => 'limit'
         ]);
 
         $title = htmlspecialchars($image->getTitle(), ENT_COMPAT | ENT_HTML5);
         return $this->json([
             'title' => ucfirst($title),
-            'src'   => $src,
+            'src' => $src,
         ]);
     }
 }

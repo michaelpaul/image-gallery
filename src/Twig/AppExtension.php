@@ -3,7 +3,6 @@
 namespace App\Twig;
 
 use App\Entity\Image;
-use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -20,10 +19,10 @@ class AppExtension extends AbstractExtension
     {
         return cloudinary_url($image->getFile(), [
             'format' => $image->getFormat(),
-            'type'   => 'private',
-            'width'   => 400,
-            'height'  => 300,
-            'crop'    => 'fill',
+            'type' => 'private',
+            'width' => 400,
+            'height' => 300,
+            'crop' => 'fill',
             'gravity' => 'auto',
         ]);
     }
