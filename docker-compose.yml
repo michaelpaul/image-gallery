@@ -16,7 +16,6 @@ services:
        - db_data:/var/lib/mysql
      ports:
        - "4306:3306"
-     restart: always
      environment:
        MYSQL_ROOT_PASSWORD: supersecret
        MYSQL_DATABASE: image-gallery
